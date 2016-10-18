@@ -1,0 +1,127 @@
+<html>
+<head>
+    <title>pixi.js Kris</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #001010;
+        }
+    </style>
+    <script src="pixi.js"></script>
+</head>
+<body>
+    <script>
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} (); 
+
+ // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0x001010);
+ 
+    // create a renderer instance.
+    var renderer = PIXI.autoDetectRenderer(600, 400);
+	//make interactive
+	stage.interactive = true;
+	//make a button
+	
+    // add the renderer view element to the DOM
+    document.body.appendChild(renderer.view);
+
+    // create a texture from an image path
+    var texture = PIXI.Texture.fromImage("love-heart.png");
+    // create a new Sprite using the texture
+    var bunny = new PIXI.Sprite(texture);
+ 
+    // center the sprites anchor point
+    bunny.anchor.x = 0.5;
+    bunny.anchor.y = 0.5;
+ 
+    // move the sprite t the center of the screen
+    bunny.position.x = 300;
+    bunny.position.y = 200;
+	bunny.height = 347;
+	bunny.width = 534 ; 
+ 
+	stage.addChild(bunny);
+	//variable for animate();
+	var i=0;
+	var parameters = QueryString.c;
+requestAnimFrame(animate);
+	var textSample = new PIXI.Text(parameters, { font: "bold 60px Verdana", fill: "#cc00ff", strokeThickness: 7});
+	textSample.buttonMode = true;
+	textSample.interactive = true;
+	textSample.anchor.x = textSample.anchor.y = 0.5;
+	textSample.position.x = 300;
+    textSample.position.y = 200;
+	var touch = false;
+		textSample.mousedown = function(data) {
+         this.isdown = true;
+						if(touch == true){
+		requestAnimFrame( click2 )
+		touch = false;
+		return 0;	
+				}
+		requestAnimFrame( click ) 
+		touch = true;
+		console.log("Clic");
+		         };
+	stage.addChild(textSample);
+	
+	//renderer.render(stage);
+	function click()
+		{
+		requestAnimFrame( click ); 
+		textSample.rotation += 0.1;
+    		renderer.render(stage);
+		}
+	function click2()
+		{
+		requestAnimFrame( click2 ); 
+		textSample.rotation -= 0.1;
+    		renderer.render(stage);
+		}
+	function animate() {
+	    requestAnimFrame( animate ); 
+		if(i<50){
+		bunny.height += 1;
+		bunny.width += 1 ; 
+
+		}
+		else{
+		bunny.height -= 1;
+		bunny.width -= 1;
+		if(i>=99){
+			i=0;}
+		}
+		i++
+		renderer.render(stage);
+		console.log(i);
+		//530  340 
+		 }
+	 
+
+
+
+    </script>
+    </body>
+</html>
